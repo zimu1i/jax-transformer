@@ -4,7 +4,7 @@ Decoder-only Transformer built from scratch in JAX/Flax. No pre-built attention 
 
 I'm building this to learn JAX properly (not just PyTorch-with-different-syntax) and to have something concrete to talk about in interviews. The goal is understanding, not scale.
 
-## What's here
+## Content
 
 - **Scaled dot-product attention** with causal masking (`src/jaxtransformer/attention.py`)
 - **Token + learned positional embeddings** (`src/jaxtransformer/embedding.py`)
@@ -19,7 +19,7 @@ pip install -e ".[dev]"
 pytest
 ```
 
-Requires Python 3.10+. Runs on CPU — no GPU needed.
+Requires Python 3.10+. Runs on CPU (no GPU needed).
 
 ## Status
 
