@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jaxtransformer"
+version = "0.1.0"
+description = "Decoder-only Transformer from scratch in JAX/Flax"
+requires-python = ">=3.10"
+dependencies = [
+    "jax[cpu]>=0.4.30",
+    "flax>=0.8.0",
+    "optax>=0.2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

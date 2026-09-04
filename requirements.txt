@@ -1,0 +1,4 @@
+jax[cpu]>=0.4.30
+flax>=0.8.0
+optax>=0.2.0
+pytest>=8.0
