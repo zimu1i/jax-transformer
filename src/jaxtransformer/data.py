@@ -17,7 +17,57 @@ class CharTokenizer:
     def decode(self, ids: list[int]) -> str:
         return "".join(self.id_to_char[i] for i in ids)
 
+class TranslationTokenizer:
+    
+    def __init__(self, text: str):
+        chars = sorted(set(text))
+        self.char_to_id = {ch: i for i, ch in enumerate(chars, 3)}
+        self.id_to_char = {i: ch for ch, i in self.char_to_id.items()}
+        self.vocab_size = len(chars) + 3
+        
+    def encode(self, text: str) -> list[int]:
+        return [self.char_to_id[ch] for ch in text]
 
+    def decode(self, ids: list[int]) -> str:
+        return "".join(self.id_to_char[i] for i in ids if i > 2)
+
+def pad_sequence(
+    token_ids: list[int],
+    max_len: int,
+) -> list[int]:
+    # appends <eos> and pads with <pad>
+    token_ids += [2]
+    token_ids = token_ids + [0] * (max_len - len(token_ids))
+    
+    return token_ids
+    
+def create_translation_batches(
+    pairs: list[tuple[str,str]],
+    src_tokenizer: TranslationTokenizer,
+    tgt_tokenizer: TranslationTokenizer,
+    max_src_len: int,
+    max_tgt_len: int,
+    batch_size: int,
+):
+    src_batches = []
+    tgt_batches = []
+    
+    for i in range(len(pairs)):
+        src_ids = src_tokenizer.encode(pairs[i][0])
+        tgt_ids = tgt_tokenizer.encode(pairs[i][1])
+        src_batches.append(pad_sequence(src_ids, max_src_len))
+        tgt_ids = [1] + tgt_ids
+        tgt_batches.append(pad_sequence(tgt_ids, max_tgt_len))
+        
+    num_pairs = (len(src_batches) // batch_size) * batch_size
+    src_batches = src_batches[:num_pairs]
+    tgt_batches = tgt_batches[:num_pairs]
+
+    src_array = jnp.array(src_batches).reshape(-1, batch_size, max_src_len)
+    tgt_array = jnp.array(tgt_batches).reshape(-1, batch_size, max_tgt_len)
+    
+    return src_array, tgt_array
+    
 def create_batches(
     token_ids: list[int],
     seq_len: int,

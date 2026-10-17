@@ -1,8 +1,11 @@
 import jax
 import jax.numpy as jnp
 
-from jaxtransformer.attention import multihead_causal_self_attention
-
+from jaxtransformer.attention import (
+    multihead_causal_self_attention, 
+    multihead_self_attention, 
+    multihead_cross_attention,
+)
 
 def layer_norm(
     x: jax.Array,
@@ -49,7 +52,83 @@ def feed_forward(
     hidden = jax.nn.gelu(x @ w1 + b1)
     return hidden @ w2 + b2
 
+def encoder_block(
+    x: jax.Array,
+    ln1_gamma: jax.Array, # weights
+    ln1_beta: jax.Array, # bias
+    w_q: jax.Array,
+    w_k: jax.Array,
+    w_v: jax.Array,
+    w_o: jax.Array,
+    ln2_gamma: jax.Array, # weights
+    ln2_beta: jax.Array, # bias
+    ff_w1: jax.Array,
+    ff_b1: jax.Array,
+    ff_w2: jax.Array,
+    ff_b2: jax.Array,
+    num_heads: int,
+    mask: jax.Array | None = None,
+) -> tuple[jax.Array, jax.Array]:
 
+    # multihead self attention layer: decides what to look at
+    normed = layer_norm(x, ln1_gamma, ln1_beta)
+    attn_out, weights = multihead_self_attention(
+        normed, w_q, w_k, w_v, w_o, num_heads, mask=mask,
+    ) # residual connection
+    x += attn_out
+
+    # forward feed layer: decides what to do with whats found
+    normed = layer_norm(x, ln2_gamma, ln2_beta)
+    ff_output = feed_forward(normed, ff_w1, ff_b1, ff_w2, ff_b2)
+    x += ff_output
+
+    return x, weights
+
+def decoder_block(
+    x: jax.Array,
+    encoder_out: jax.Array,
+    ln1_gamma: jax.Array, # weights
+    ln1_beta: jax.Array, # bias
+    cross_w_q: jax.Array,
+    cross_w_k: jax.Array,
+    cross_w_v: jax.Array,
+    cross_w_o: jax.Array,
+    w_q: jax.Array,
+    w_k: jax.Array,
+    w_v: jax.Array,
+    w_o: jax.Array,
+    ln2_gamma: jax.Array, # weights
+    ln2_beta: jax.Array, # bias
+    ff_w1: jax.Array,
+    ff_b1: jax.Array,
+    ff_w2: jax.Array,
+    ff_b2: jax.Array,
+    ln3_gamma: jax.Array, # weights
+    ln3_beta: jax.Array, # bias
+    num_heads: int,
+    mask: jax.Array | None = None,
+) -> tuple[jax.Array, jax.Array]:
+
+    # multihead self attention layer: decides what to look at
+    normed = layer_norm(x, ln1_gamma, ln1_beta)
+    attn_out, weights = multihead_causal_self_attention(normed, w_q, w_k, w_v, w_o,
+                                                        num_heads) # residual connection
+    x += attn_out
+
+    # cross attention layer
+    normed = layer_norm(x, ln2_gamma, ln2_beta)
+    ca_output, weights = multihead_cross_attention(normed, encoder_out, cross_w_q,
+                                                   cross_w_k, cross_w_v, cross_w_o,
+                                                   num_heads, mask=mask)
+    x += ca_output
+    
+    # forward feed layer: decides what to do with whats found
+    normed = layer_norm(x, ln3_gamma, ln3_beta)
+    ff_output = feed_forward(normed, ff_w1, ff_b1, ff_w2, ff_b2)
+    x += ff_output
+
+    return x, weights
+    
 def transformer_block(
     x: jax.Array,
     ln1_gamma: jax.Array,

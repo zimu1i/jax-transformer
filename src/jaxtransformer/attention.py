@@ -36,6 +36,76 @@ def scaled_dot_product_attention(
 
     return output, weights
 
+def multihead_self_attention(
+    x: jax.Array,
+    w_q: jax.Array,
+    w_k: jax.Array,
+    w_v: jax.Array,
+    w_o: jax.Array,
+    num_heads: int,
+    mask: jax.Array | None = None,
+)-> tuple[jax.Array, jax.Array]:
+    """Multi-head self-attention from scratch.
+
+    Args:
+        x:     Input, shape (batch, seq_len, d_model).
+        w_q:   Query projection,  shape (d_model, d_model).
+        w_k:   Key projection,    shape (d_model, d_model).
+        w_v:   Value projection,  shape (d_model, d_model).
+        w_o:   Output projection, shape (d_model, d_model).
+        num_heads: Number of attention heads. Must divide d_model evenly.
+        mask: padding mask.
+
+    Returns:
+        output:  shape (batch, seq_len, d_model)
+        weights: shape (batch, num_heads, seq_len, seq_len)
+    """
+    batch, seq_len, d_model = x.shape
+    head_dim = d_model // num_heads
+
+    q = x @ w_q
+    k = x @ w_k
+    v = x @ w_v
+    
+    q = q.reshape(batch, seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+    k = k.reshape(batch, seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+    v = v.reshape(batch, seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+
+    output, weights = scaled_dot_product_attention(q, k, v, mask=mask)
+    output = output.transpose(0, 2, 1, 3).reshape(batch, seq_len, d_model)
+    output = output @ w_o
+    return output, weights
+
+# cross-attention
+# q comes from decoder: asks "what am i looking for?"
+# k and v comes from encoder: knows what is available to look at
+def multihead_cross_attention(
+    x_q:jax.Array, #(batch, target_seq_len, d_model) from decoder
+    x_kv:jax.Array, #(batch, source_seq_len, d_model) from encoder
+    w_q: jax.Array,
+    w_k: jax.Array,
+    w_v: jax.Array,
+    w_o: jax.Array,
+    num_heads: int,
+    mask: jax.Array | None = None,
+)-> tuple[jax.Array, jax.Array]:
+    
+    batch, target_seq_len, d_model = x_q.shape
+    source_seq_len = x_kv.shape[1]
+    head_dim = d_model // num_heads
+    
+    q = x_q @ w_q
+    k = x_kv @ w_k
+    v = x_kv @ w_v
+    
+    q = q.reshape(batch, target_seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+    k = k.reshape(batch, source_seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+    v = v.reshape(batch, source_seq_len, num_heads, head_dim).transpose(0, 2, 1, 3)
+
+    output, weights = scaled_dot_product_attention(q, k, v, mask=mask)
+    output = output.transpose(0, 2, 1, 3).reshape(batch, target_seq_len, d_model)
+    output = output @ w_o
+    return output, weights
 
 def make_causal_mask(seq_len: int) -> jax.Array:
     """Lower-triangular boolean mask: position i can attend to positions 0..i.

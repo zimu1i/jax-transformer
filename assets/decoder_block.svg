@@ -1,0 +1,102 @@
+<svg viewBox="0 0 380 580" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow-dec" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="380" height="580" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="190" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">Decoder Block (pre-norm)</text>
+
+  <!-- Input -->
+  <rect x="125" y="46" width="130" height="28" rx="5" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.2"/>
+  <text x="190" y="65" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">x (target embeddings)</text>
+
+  <!-- Main flow -->
+  <line x1="190" y1="74" x2="190" y2="90" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="190" cy="90" r="3" fill="#64748b"/>
+
+  <!-- Residual 1 -->
+  <line x1="190" y1="90" x2="54" y2="90" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="90" x2="54" y2="210" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="210" x2="162" y2="210" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-dec)"/>
+
+  <!-- LN1 -->
+  <line x1="190" y1="90" x2="190" y2="106" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="125" y="108" width="130" height="26" rx="5" fill="#fae8ff" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="190" y="126" text-anchor="middle" font-size="11" font-weight="600" fill="#6b21a8">LayerNorm</text>
+
+  <!-- Causal Self-Attention -->
+  <line x1="190" y1="134" x2="190" y2="150" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="100" y="152" width="180" height="32" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="190" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">Causal Self-Attention</text>
+  <text x="300" y="164" font-size="9" fill="#94a3b8" font-style="italic">lower-triangular</text>
+  <text x="300" y="176" font-size="9" fill="#94a3b8" font-style="italic">mask applied</text>
+
+  <!-- Add 1 -->
+  <line x1="190" y1="184" x2="190" y2="200" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <circle cx="190" cy="210" r="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="190" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">+</text>
+  <text x="36" y="204" font-size="9" fill="#94a3b8">residual</text>
+
+  <!-- Branch 2 -->
+  <line x1="190" y1="224" x2="190" y2="244" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="190" cy="244" r="3" fill="#64748b"/>
+
+  <!-- Residual 2 -->
+  <line x1="190" y1="244" x2="54" y2="244" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="244" x2="54" y2="370" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="370" x2="162" y2="370" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-dec)"/>
+
+  <!-- LN2 -->
+  <line x1="190" y1="244" x2="190" y2="260" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="125" y="262" width="130" height="26" rx="5" fill="#fae8ff" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="190" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#6b21a8">LayerNorm</text>
+
+  <!-- Cross-Attention -->
+  <line x1="190" y1="288" x2="190" y2="306" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="100" y="308" width="180" height="36" rx="5" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="190" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="#9d174d">Cross-Attention</text>
+  <text x="190" y="339" text-anchor="middle" font-size="9" fill="#9d174d">Q from decoder, K/V from encoder</text>
+
+  <!-- Encoder output arrow into cross-attention -->
+  <rect x="296" y="298" width="76" height="24" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1.2"/>
+  <text x="334" y="315" text-anchor="middle" font-size="9" font-weight="600" fill="#c2410c">encoder_out</text>
+  <line x1="296" y1="316" x2="280" y2="325" stroke="#f97316" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+
+  <!-- Add 2 -->
+  <line x1="190" y1="344" x2="190" y2="360" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <circle cx="190" cy="370" r="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="190" y="375" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">+</text>
+  <text x="36" y="364" font-size="9" fill="#94a3b8">residual</text>
+
+  <!-- Branch 3 -->
+  <line x1="190" y1="384" x2="190" y2="400" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="190" cy="400" r="3" fill="#64748b"/>
+
+  <!-- Residual 3 -->
+  <line x1="190" y1="400" x2="54" y2="400" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="400" x2="54" y2="520" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="54" y1="520" x2="162" y2="520" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-dec)"/>
+
+  <!-- LN3 -->
+  <line x1="190" y1="400" x2="190" y2="416" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="125" y="418" width="130" height="26" rx="5" fill="#fae8ff" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="190" y="436" text-anchor="middle" font-size="11" font-weight="600" fill="#6b21a8">LayerNorm</text>
+
+  <!-- FFN -->
+  <line x1="190" y1="444" x2="190" y2="460" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="100" y="462" width="180" height="32" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="190" y="483" text-anchor="middle" font-size="11" font-weight="600" fill="#065f46">FFN (expand, GELU, contract)</text>
+
+  <!-- Add 3 -->
+  <line x1="190" y1="494" x2="190" y2="510" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <circle cx="190" cy="520" r="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="190" y="525" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">+</text>
+  <text x="36" y="514" font-size="9" fill="#94a3b8">residual</text>
+
+  <!-- Output -->
+  <line x1="190" y1="534" x2="190" y2="548" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-dec)"/>
+  <rect x="135" y="548" width="110" height="24" rx="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.2"/>
+  <text x="190" y="565" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">output</text>
+</svg>
