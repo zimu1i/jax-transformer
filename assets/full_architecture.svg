@@ -1,147 +1,262 @@
-<svg viewBox="0 0 700 680" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
-  <defs>
-    <marker id="arrow-full" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-    <marker id="arrow-orange" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/>
-    </marker>
-  </defs>
-
-  <rect width="700" height="680" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-  <text x="350" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">Encoder-Decoder Transformer (full architecture)</text>
-
-  <!-- ============ ENCODER SIDE (LEFT) ============ -->
-  <text x="190" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">ENCODER</text>
-
-  <!-- Source input -->
-  <rect x="110" y="76" width="160" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.2"/>
-  <text x="190" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">Source tokens ("hola")</text>
-
-  <!-- Token embedding -->
-  <line x1="190" y1="106" x2="190" y2="122" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="105" y="124" width="170" height="28" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.2"/>
-  <text x="190" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#c2410c">Token Embedding (src_vocab, d)</text>
-
-  <!-- + Position -->
-  <line x1="190" y1="152" x2="190" y2="164" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <circle cx="190" cy="172" r="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="190" y="176" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">+</text>
-  <text x="220" y="168" font-size="9" fill="#94a3b8">positional</text>
-  <text x="220" y="180" font-size="9" fill="#94a3b8">embedding</text>
-
-  <!-- Encoder block stack -->
-  <line x1="190" y1="182" x2="190" y2="200" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-
-  <!-- Encoder block 1 -->
-  <rect x="80" y="202" width="220" height="120" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="190" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#1e40af">Encoder Block (x N)</text>
-
-  <rect x="110" y="232" width="160" height="24" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
-  <text x="190" y="249" text-anchor="middle" font-size="9" font-weight="600" fill="#1e40af">Self-Attention (bidirectional)</text>
-
-  <rect x="110" y="260" width="160" height="20" rx="4" fill="#fae8ff" stroke="#a855f7" stroke-width="0.8"/>
-  <text x="190" y="274" text-anchor="middle" font-size="8" fill="#6b21a8">LayerNorm + Residual</text>
-
-  <rect x="110" y="284" width="160" height="24" rx="4" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
-  <text x="190" y="301" text-anchor="middle" font-size="9" font-weight="600" fill="#065f46">Feed-Forward Network</text>
-
-  <rect x="110" y="312" width="160" height="20" rx="4" fill="#fae8ff" stroke="#a855f7" stroke-width="0.8"/>
-  <text x="190" y="326" text-anchor="middle" font-size="8" fill="#6b21a8">LayerNorm + Residual</text>
-
-  <!-- Padding mask into encoder -->
-  <rect x="12" y="258" width="56" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,2"/>
-  <text x="40" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#991b1b">padding</text>
-  <text x="40" y="287" text-anchor="middle" font-size="8" font-weight="600" fill="#991b1b">mask</text>
-  <line x1="68" y1="278" x2="108" y2="246" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow-full)"/>
-
-  <!-- Encoder output -->
-  <line x1="190" y1="322" x2="190" y2="350" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="115" y="352" width="150" height="28" rx="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.2"/>
-  <text x="190" y="371" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">encoder_out</text>
-
-  <!-- Arrow from encoder_out to decoder cross-attention -->
-  <line x1="300" y1="366" x2="395" y2="366" stroke="#f97316" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <text x="348" y="360" text-anchor="middle" font-size="9" font-weight="600" fill="#f97316">K, V</text>
-
-  <!-- ============ DECODER SIDE (RIGHT) ============ -->
-  <text x="510" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#9d174d">DECODER</text>
-
-  <!-- Target input -->
-  <rect x="420" y="76" width="180" height="30" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="1.2"/>
-  <text x="510" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#9d174d">Target tokens (&lt;bos&gt; "hello")</text>
-
-  <!-- Token embedding -->
-  <line x1="510" y1="106" x2="510" y2="122" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="425" y="124" width="170" height="28" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.2"/>
-  <text x="510" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#c2410c">Token Embedding (tgt_vocab, d)</text>
-
-  <!-- + Position -->
-  <line x1="510" y1="152" x2="510" y2="164" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <circle cx="510" cy="172" r="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="510" y="176" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">+</text>
-  <text x="540" y="168" font-size="9" fill="#94a3b8">positional</text>
-  <text x="540" y="180" font-size="9" fill="#94a3b8">embedding</text>
-
-  <!-- Decoder block stack -->
-  <line x1="510" y1="182" x2="510" y2="200" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-
-  <rect x="398" y="202" width="224" height="190" rx="8" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
-  <text x="510" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#9d174d">Decoder Block (x N)</text>
-
-  <!-- Causal self-attention -->
-  <rect x="420" y="232" width="180" height="24" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
-  <text x="510" y="249" text-anchor="middle" font-size="9" font-weight="600" fill="#1e40af">Causal Self-Attention</text>
-
-  <rect x="420" y="260" width="180" height="18" rx="4" fill="#fae8ff" stroke="#a855f7" stroke-width="0.8"/>
-  <text x="510" y="273" text-anchor="middle" font-size="8" fill="#6b21a8">LayerNorm + Residual</text>
-
-  <!-- Cross-attention -->
-  <rect x="420" y="282" width="180" height="28" rx="4" fill="#fce7f3" stroke="#ec4899" stroke-width="1.2"/>
-  <text x="510" y="297" text-anchor="middle" font-size="9" font-weight="600" fill="#9d174d">Cross-Attention</text>
-  <text x="510" y="307" text-anchor="middle" font-size="8" fill="#9d174d">Q=decoder, K/V=encoder</text>
-
-  <rect x="420" y="314" width="180" height="18" rx="4" fill="#fae8ff" stroke="#a855f7" stroke-width="0.8"/>
-  <text x="510" y="327" text-anchor="middle" font-size="8" fill="#6b21a8">LayerNorm + Residual</text>
-
-  <!-- FFN -->
-  <rect x="420" y="336" width="180" height="24" rx="4" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
-  <text x="510" y="353" text-anchor="middle" font-size="9" font-weight="600" fill="#065f46">Feed-Forward Network</text>
-
-  <rect x="420" y="364" width="180" height="18" rx="4" fill="#fae8ff" stroke="#a855f7" stroke-width="0.8"/>
-  <text x="510" y="377" text-anchor="middle" font-size="8" fill="#6b21a8">LayerNorm + Residual</text>
-
-  <!-- Causal mask label -->
-  <rect x="626" y="232" width="56" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,2"/>
-  <text x="654" y="249" text-anchor="middle" font-size="8" font-weight="600" fill="#991b1b">causal</text>
-  <text x="654" y="261" text-anchor="middle" font-size="8" font-weight="600" fill="#991b1b">mask</text>
-  <line x1="626" y1="252" x2="602" y2="246" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow-full)"/>
-
-  <!-- Decoder output flow -->
-  <line x1="510" y1="392" x2="510" y2="420" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-
-  <!-- Final LayerNorm -->
-  <rect x="440" y="422" width="140" height="28" rx="5" fill="#fae8ff" stroke="#a855f7" stroke-width="1.2"/>
-  <text x="510" y="441" text-anchor="middle" font-size="11" font-weight="600" fill="#6b21a8">Final LayerNorm</text>
-
-  <!-- Linear projection -->
-  <line x1="510" y1="450" x2="510" y2="470" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="420" y="472" width="180" height="34" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.2"/>
-  <text x="510" y="490" text-anchor="middle" font-size="10" font-weight="600" fill="#c2410c">Linear (tgt_emb&#x1D40;, weight tying)</text>
-  <text x="510" y="502" text-anchor="middle" font-size="8" fill="#c2410c">reuses target token embedding table</text>
-
-  <!-- Softmax / Output -->
-  <line x1="510" y1="506" x2="510" y2="526" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="440" y="528" width="140" height="28" rx="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="510" y="547" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">Logits (tgt_vocab)</text>
-
-  <!-- Greedy decode annotation -->
-  <line x1="510" y1="556" x2="510" y2="574" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow-full)"/>
-  <rect x="430" y="576" width="160" height="28" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.2"/>
-  <text x="510" y="594" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">argmax -> next token</text>
-
-  <!-- Bottom annotation -->
-  <text x="350" y="640" text-anchor="middle" font-size="11" fill="#64748b">Paper: "Attention Is All You Need" (Vaswani et al., 2017)</text>
-  <text x="350" y="658" text-anchor="middle" font-size="10" fill="#94a3b8">Implementation: character-level Spanish-to-English translation</text>
-  <text x="350" y="672" text-anchor="middle" font-size="10" fill="#94a3b8">All attention, embeddings, and training written from scratch in JAX/Flax</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1051 910" width="1051" height="910" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<defs><marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 L3,5 z" fill="#3f7a78"/></marker></defs>
+<rect width="1051" height="910" rx="14" fill="#ffffff"/>
+<text x="40.0" y="112.0" font-size="15" font-weight="bold" fill="#1e40af" text-anchor="start">ENCODER</text>
+<polygon points="40.0,273.2 64.0,273.2 124.5,212.8 100.5,212.8" fill="#ededed" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="64.0,273.2 124.5,212.8 124.5,226.8 64.0,287.2" fill="#cdcdcd" stroke="#a0a0a0" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="40.0,273.2 64.0,273.2 64.0,287.2 40.0,287.2" fill="#e4e4e4" stroke="#a0a0a0" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="40.0,273.2 64.0,273.2 64.0,287.2 40.0,287.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="64.0,273.2 124.5,212.8 124.5,226.8 64.0,287.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="40.0,273.2 100.5,212.8 124.5,212.8 64.0,273.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="100.5" y1="212.8" x2="100.5" y2="226.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="100.5" y1="226.8" x2="124.5" y2="226.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="40.0" y1="287.2" x2="100.5" y2="226.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="104.2" y="267.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 104.2 267.0)">S</text>
+<text x="52.0" y="419.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">source ids</text>
+<text x="52.0" y="435.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">"hola"</text>
+<polygon points="170.5,225.2 194.5,225.2 255.0,164.8 231.0,164.8" fill="#ffefd5" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="194.5,225.2 255.0,164.8 255.0,274.8 194.5,335.2" fill="#e6cfac" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="170.5,225.2 194.5,225.2 194.5,335.2 170.5,335.2" fill="#ffe6bf" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="170.5,225.2 194.5,225.2 194.5,335.2 170.5,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="194.5,225.2 255.0,164.8 255.0,274.8 194.5,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="170.5,225.2 231.0,164.8 255.0,164.8 194.5,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="231.0" y1="164.8" x2="231.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="231.0" y1="274.8" x2="255.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="170.5" y1="335.2" x2="231.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="182.5" y="353.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="234.8" y="315.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 234.8 315.0)">S</text>
+<text x="182.5" y="419.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">embedding</text>
+<text x="182.5" y="435.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">token + position</text>
+<polygon points="301.0,225.2 310.0,225.2 370.5,164.8 361.5,164.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="310.0,225.2 370.5,164.8 370.5,274.8 310.0,335.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="301.0,225.2 310.0,225.2 310.0,335.2 301.0,335.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="301.0,225.2 310.0,225.2 310.0,335.2 301.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="310.0,225.2 370.5,164.8 370.5,274.8 310.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="301.0,225.2 361.5,164.8 370.5,164.8 310.0,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="361.5" y1="164.8" x2="361.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="361.5" y1="274.8" x2="370.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="301.0" y1="335.2" x2="361.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="310.0,225.2 334.0,225.2 394.5,164.8 370.5,164.8" fill="#d3e2f3" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="334.0,225.2 394.5,164.8 394.5,274.8 334.0,335.2" fill="#a9bed4" stroke="#8494a5" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="310.0,225.2 334.0,225.2 334.0,335.2 310.0,335.2" fill="#bcd3ec" stroke="#8494a5" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="310.0,225.2 334.0,225.2 334.0,335.2 310.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="334.0,225.2 394.5,164.8 394.5,274.8 334.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="310.0,225.2 370.5,164.8 394.5,164.8 334.0,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="370.5" y1="164.8" x2="370.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="370.5" y1="274.8" x2="394.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="310.0" y1="335.2" x2="370.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="334.0,225.2 343.0,225.2 403.5,164.8 394.5,164.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="343.0,225.2 403.5,164.8 403.5,274.8 343.0,335.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="334.0,225.2 343.0,225.2 343.0,335.2 334.0,335.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="334.0,225.2 343.0,225.2 343.0,335.2 334.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="343.0,225.2 403.5,164.8 403.5,274.8 343.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="334.0,225.2 394.5,164.8 403.5,164.8 343.0,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="394.5" y1="164.8" x2="394.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="394.5" y1="274.8" x2="403.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="334.0" y1="335.2" x2="394.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="343.0,185.2 367.0,185.2 427.5,124.8 403.5,124.8" fill="#fed5a9" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="367.0,185.2 427.5,124.8 427.5,314.8 367.0,375.2" fill="#e4ab6e" stroke="#b18555" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="343.0,185.2 367.0,185.2 367.0,375.2 343.0,375.2" fill="#fdbe7a" stroke="#b18555" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="343.0,185.2 367.0,185.2 367.0,375.2 343.0,375.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="367.0,185.2 427.5,124.8 427.5,314.8 367.0,375.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="343.0,185.2 403.5,124.8 427.5,124.8 367.0,185.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="403.5" y1="124.8" x2="403.5" y2="314.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="403.5" y1="314.8" x2="427.5" y2="314.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="343.0" y1="375.2" x2="403.5" y2="314.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="367.0,225.2 391.0,225.2 451.5,164.8 427.5,164.8" fill="#ffefd5" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="391.0,225.2 451.5,164.8 451.5,274.8 391.0,335.2" fill="#e6cfac" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="367.0,225.2 391.0,225.2 391.0,335.2 367.0,335.2" fill="#ffe6bf" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="367.0,225.2 391.0,225.2 391.0,335.2 367.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="391.0,225.2 451.5,164.8 451.5,274.8 391.0,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="367.0,225.2 427.5,164.8 451.5,164.8 391.0,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="427.5" y1="164.8" x2="427.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="427.5" y1="274.8" x2="451.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="367.0" y1="335.2" x2="427.5" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="322.0" y="393.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="355.0" y="393.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">256</text>
+<text x="379.0" y="393.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="407.2" y="355.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 407.2 355.0)">S</text>
+<text x="346.0" y="419.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">encoder block</text>
+<text x="346.0" y="435.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">self-attention, FFN</text>
+<rect x="291.0" y="112.8" width="170.5" height="288.5" rx="10" fill="none" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="6,4"/>
+<text x="453.5" y="130.8" font-size="14" font-weight="bold" fill="#5f6b7a" text-anchor="end">x N</text>
+<polygon points="497.5,225.2 521.5,225.2 582.0,164.8 558.0,164.8" fill="#d5eddc" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="521.5,225.2 582.0,164.8 582.0,274.8 521.5,335.2" fill="#acccb5" stroke="#869f8d" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="497.5,225.2 521.5,225.2 521.5,335.2 497.5,335.2" fill="#bfe3c9" stroke="#869f8d" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="497.5,225.2 521.5,225.2 521.5,335.2 497.5,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="521.5,225.2 582.0,164.8 582.0,274.8 521.5,335.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="497.5,225.2 558.0,164.8 582.0,164.8 521.5,225.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="558.0" y1="164.8" x2="558.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="558.0" y1="274.8" x2="582.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="497.5" y1="335.2" x2="558.0" y2="274.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="509.5" y="353.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="561.8" y="315.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 561.8 315.0)">S</text>
+<text x="509.5" y="419.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">encoder output</text>
+<text x="509.5" y="435.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">(S, 64)</text>
+<polyline points="94.2,250.0 168.5,250.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="224.8,250.0 299.0,250.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="421.2,250.0 495.5,250.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<text x="286.5" y="488.0" font-size="15" font-weight="bold" fill="#9d174d" text-anchor="start">DECODER</text>
+<polygon points="286.5,648.2 310.5,648.2 371.0,587.8 347.0,587.8" fill="#ededed" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="310.5,648.2 371.0,587.8 371.0,601.8 310.5,662.2" fill="#cdcdcd" stroke="#a0a0a0" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="286.5,648.2 310.5,648.2 310.5,662.2 286.5,662.2" fill="#e4e4e4" stroke="#a0a0a0" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="286.5,648.2 310.5,648.2 310.5,662.2 286.5,662.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="310.5,648.2 371.0,587.8 371.0,601.8 310.5,662.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="286.5,648.2 347.0,587.8 371.0,587.8 310.5,648.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="347.0" y1="587.8" x2="347.0" y2="601.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="347.0" y1="601.8" x2="371.0" y2="601.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="286.5" y1="662.2" x2="347.0" y2="601.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="350.8" y="642.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 350.8 642.0)">T</text>
+<text x="298.5" y="794.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">target ids</text>
+<text x="298.5" y="810.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">"&lt;bos&gt;hello"</text>
+<polygon points="417.0,600.2 441.0,600.2 501.5,539.8 477.5,539.8" fill="#ffefd5" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="441.0,600.2 501.5,539.8 501.5,649.8 441.0,710.2" fill="#e6cfac" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="417.0,600.2 441.0,600.2 441.0,710.2 417.0,710.2" fill="#ffe6bf" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="417.0,600.2 441.0,600.2 441.0,710.2 417.0,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="441.0,600.2 501.5,539.8 501.5,649.8 441.0,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="417.0,600.2 477.5,539.8 501.5,539.8 441.0,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="477.5" y1="539.8" x2="477.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="477.5" y1="649.8" x2="501.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="417.0" y1="710.2" x2="477.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="429.0" y="728.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="481.2" y="690.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 481.2 690.0)">T</text>
+<text x="429.0" y="794.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">embedding</text>
+<text x="429.0" y="810.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">token + position</text>
+<polygon points="547.5,600.2 556.5,600.2 617.0,539.8 608.0,539.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="556.5,600.2 617.0,539.8 617.0,649.8 556.5,710.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="547.5,600.2 556.5,600.2 556.5,710.2 547.5,710.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="547.5,600.2 556.5,600.2 556.5,710.2 547.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="556.5,600.2 617.0,539.8 617.0,649.8 556.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="547.5,600.2 608.0,539.8 617.0,539.8 556.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="608.0" y1="539.8" x2="608.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="608.0" y1="649.8" x2="617.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="547.5" y1="710.2" x2="608.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="556.5,600.2 580.5,600.2 641.0,539.8 617.0,539.8" fill="#b6cee9" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="580.5,600.2 641.0,539.8 641.0,649.8 580.5,710.2" fill="#81a1c7" stroke="#647d9b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="556.5,600.2 580.5,600.2 580.5,710.2 556.5,710.2" fill="#8fb3dd" stroke="#647d9b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="556.5,600.2 580.5,600.2 580.5,710.2 556.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="580.5,600.2 641.0,539.8 641.0,649.8 580.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="556.5,600.2 617.0,539.8 641.0,539.8 580.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="617.0" y1="539.8" x2="617.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="617.0" y1="649.8" x2="641.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="556.5" y1="710.2" x2="617.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="580.5,600.2 589.5,600.2 650.0,539.8 641.0,539.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="589.5,600.2 650.0,539.8 650.0,649.8 589.5,710.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="580.5,600.2 589.5,600.2 589.5,710.2 580.5,710.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="580.5,600.2 589.5,600.2 589.5,710.2 580.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="589.5,600.2 650.0,539.8 650.0,649.8 589.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="580.5,600.2 641.0,539.8 650.0,539.8 589.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="641.0" y1="539.8" x2="641.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="641.0" y1="649.8" x2="650.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="580.5" y1="710.2" x2="641.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="589.5,600.2 613.5,600.2 674.0,539.8 650.0,539.8" fill="#f7d1da" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="613.5,600.2 674.0,539.8 674.0,649.8 613.5,710.2" fill="#daa6b2" stroke="#a9818b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="589.5,600.2 613.5,600.2 613.5,710.2 589.5,710.2" fill="#f2b8c6" stroke="#a9818b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="589.5,600.2 613.5,600.2 613.5,710.2 589.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="613.5,600.2 674.0,539.8 674.0,649.8 613.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="589.5,600.2 650.0,539.8 674.0,539.8 613.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="650.0" y1="539.8" x2="650.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="650.0" y1="649.8" x2="674.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="589.5" y1="710.2" x2="650.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="613.5,600.2 622.5,600.2 683.0,539.8 674.0,539.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="622.5,600.2 683.0,539.8 683.0,649.8 622.5,710.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="613.5,600.2 622.5,600.2 622.5,710.2 613.5,710.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="613.5,600.2 622.5,600.2 622.5,710.2 613.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="622.5,600.2 683.0,539.8 683.0,649.8 622.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="613.5,600.2 674.0,539.8 683.0,539.8 622.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="674.0" y1="539.8" x2="674.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="674.0" y1="649.8" x2="683.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="613.5" y1="710.2" x2="674.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="622.5,560.2 646.5,560.2 707.0,499.8 683.0,499.8" fill="#fed5a9" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="646.5,560.2 707.0,499.8 707.0,689.8 646.5,750.2" fill="#e4ab6e" stroke="#b18555" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="622.5,560.2 646.5,560.2 646.5,750.2 622.5,750.2" fill="#fdbe7a" stroke="#b18555" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="622.5,560.2 646.5,560.2 646.5,750.2 622.5,750.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="646.5,560.2 707.0,499.8 707.0,689.8 646.5,750.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="622.5,560.2 683.0,499.8 707.0,499.8 646.5,560.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="683.0" y1="499.8" x2="683.0" y2="689.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="683.0" y1="689.8" x2="707.0" y2="689.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="622.5" y1="750.2" x2="683.0" y2="689.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="646.5,600.2 670.5,600.2 731.0,539.8 707.0,539.8" fill="#ffefd5" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="670.5,600.2 731.0,539.8 731.0,649.8 670.5,710.2" fill="#e6cfac" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="646.5,600.2 670.5,600.2 670.5,710.2 646.5,710.2" fill="#ffe6bf" stroke="#b2a186" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="646.5,600.2 670.5,600.2 670.5,710.2 646.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="670.5,600.2 731.0,539.8 731.0,649.8 670.5,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="646.5,600.2 707.0,539.8 731.0,539.8 670.5,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="707.0" y1="539.8" x2="707.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="707.0" y1="649.8" x2="731.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="646.5" y1="710.2" x2="707.0" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="568.5" y="768.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="601.5" y="768.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="634.5" y="768.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">256</text>
+<text x="658.5" y="768.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">64</text>
+<text x="686.8" y="730.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 686.8 730.0)">T</text>
+<text x="609.0" y="794.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">decoder block</text>
+<text x="609.0" y="810.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">masked attn, cross-attn, FFN</text>
+<rect x="537.5" y="487.8" width="203.5" height="288.5" rx="10" fill="none" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="6,4"/>
+<text x="733.0" y="505.8" font-size="14" font-weight="bold" fill="#5f6b7a" text-anchor="end">x N</text>
+<polygon points="777.0,600.2 786.0,600.2 846.5,539.8 837.5,539.8" fill="#decee8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="786.0,600.2 846.5,539.8 846.5,649.8 786.0,710.2" fill="#b8a2c5" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="777.0,600.2 786.0,600.2 786.0,710.2 777.0,710.2" fill="#cdb4db" stroke="#907e99" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="777.0,600.2 786.0,600.2 786.0,710.2 777.0,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="786.0,600.2 846.5,539.8 846.5,649.8 786.0,710.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="777.0,600.2 837.5,539.8 846.5,539.8 786.0,600.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="837.5" y1="539.8" x2="837.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="837.5" y1="649.8" x2="846.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="777.0" y1="710.2" x2="837.5" y2="649.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<polygon points="786.0,580.2 810.0,580.2 870.5,519.8 846.5,519.8" fill="#f0ae9f" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="810.0,580.2 870.5,519.8 870.5,669.8 810.0,730.2" fill="#d17660" stroke="#a25c4b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="786.0,580.2 810.0,580.2 810.0,730.2 786.0,730.2" fill="#e8836b" stroke="#a25c4b" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="786.0,580.2 810.0,580.2 810.0,730.2 786.0,730.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="810.0,580.2 870.5,519.8 870.5,669.8 810.0,730.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="786.0,580.2 846.5,519.8 870.5,519.8 810.0,580.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="846.5" y1="519.8" x2="846.5" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="846.5" y1="669.8" x2="870.5" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="786.0" y1="730.2" x2="846.5" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="798.0" y="748.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">V</text>
+<text x="850.2" y="710.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 850.2 710.0)">T</text>
+<text x="793.5" y="794.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">logits</text>
+<text x="793.5" y="810.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">x @ embedding.T</text>
+<polygon points="916.5,580.2 940.5,580.2 1001.0,519.8 977.0,519.8" fill="#bea3c8" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="940.5,580.2 1001.0,519.8 1001.0,669.8 940.5,730.2" fill="#8c6799" stroke="#6c5077" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="916.5,580.2 940.5,580.2 940.5,730.2 916.5,730.2" fill="#9b72aa" stroke="#6c5077" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="916.5,580.2 940.5,580.2 940.5,730.2 916.5,730.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="940.5,580.2 1001.0,519.8 1001.0,669.8 940.5,730.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<polygon points="916.5,580.2 977.0,519.8 1001.0,519.8 940.5,580.2" fill="none" stroke="#3a3a3a" stroke-width="0.9" stroke-linejoin="round"/>
+<line x1="977.0" y1="519.8" x2="977.0" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="977.0" y1="669.8" x2="1001.0" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<line x1="916.5" y1="730.2" x2="977.0" y2="669.8" stroke="#8a8a8a" stroke-width="0.7" stroke-dasharray="4,3"/>
+<text x="928.5" y="748.2" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle">V</text>
+<text x="980.8" y="710.0" font-size="13" font-weight="normal" fill="#1f2933" text-anchor="middle" transform="rotate(-45 980.8 710.0)">T</text>
+<text x="928.5" y="794.2" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">softmax</text>
+<text x="928.5" y="810.2" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="middle">next-char probs</text>
+<polyline points="340.8,625.0 415.0,625.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="471.2,625.0 545.5,625.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="700.8,625.0 775.0,625.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="840.2,625.0 914.5,625.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<polyline points="551.8,250.0 631.8,250.0 631.8,566.0" fill="none" stroke="#3f7a78" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#head)"/>
+<text x="643.8" y="420.0" font-size="13" font-weight="bold" fill="#3f7a78" text-anchor="start">keys and values</text>
+<text x="643.8" y="436.0" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="start">for cross-attention in</text>
+<text x="643.8" y="452.0" font-size="12" font-weight="normal" fill="#5f6b7a" text-anchor="start">every decoder block</text>
+<rect x="40.0" y="857.0" width="14.0" height="14.0" rx="2" fill="#ffe6bf" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="62.0" y="869.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">embedding</text>
+<rect x="230.0" y="857.0" width="14.0" height="14.0" rx="2" fill="#cdb4db" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="252.0" y="869.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">LayerNorm</text>
+<rect x="420.0" y="857.0" width="14.0" height="14.0" rx="2" fill="#bcd3ec" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="442.0" y="869.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">self-attention</text>
+<rect x="610.0" y="857.0" width="14.0" height="14.0" rx="2" fill="#8fb3dd" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="632.0" y="869.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">masked self-attention</text>
+<rect x="800.0" y="857.0" width="14.0" height="14.0" rx="2" fill="#f2b8c6" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="822.0" y="869.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">cross-attention</text>
+<rect x="40.0" y="883.0" width="14.0" height="14.0" rx="2" fill="#fdbe7a" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="62.0" y="895.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">FFN expand (d_ff)</text>
+<rect x="230.0" y="883.0" width="14.0" height="14.0" rx="2" fill="#bfe3c9" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="252.0" y="895.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">encoder output</text>
+<rect x="420.0" y="883.0" width="14.0" height="14.0" rx="2" fill="#e8836b" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="442.0" y="895.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">logits</text>
+<rect x="610.0" y="883.0" width="14.0" height="14.0" rx="2" fill="#9b72aa" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="632.0" y="895.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">softmax</text>
+<rect x="800.0" y="883.0" width="14.0" height="14.0" rx="2" fill="#e4e4e4" stroke="#3a3a3a" stroke-width="0.9"/>
+<text x="822.0" y="895.0" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="start">token ids</text>
+<text x="525.5" y="40.0" font-size="20" font-weight="bold" fill="#1f2933" text-anchor="middle">Encoder-Decoder Transformer: tensors flowing through the network</text>
+<text x="525.5" y="64.0" font-size="13" font-weight="normal" fill="#5f6b7a" text-anchor="middle">One example (batch dim omitted). Numbers under a block = feature size. Diagonal label = sequence length. Not to scale.</text>
 </svg>
