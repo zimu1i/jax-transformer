@@ -1,3 +1,5 @@
+import random
+
 import jax
 import jax.numpy as jnp
 
@@ -40,7 +42,27 @@ def pad_sequence(
     token_ids = token_ids + [0] * (max_len - len(token_ids))
     
     return token_ids
-    
+
+
+def load_pairs(path: str, max_len: int, limit: int, seed: int = 0) -> list[tuple[str, str]]:
+    """Load (spanish, english) pairs from a tab-separated Tatoeba/Anki file."""
+    pairs = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) < 2:
+                continue
+            english, spanish = fields[0].lower(), fields[1].lower()
+            # room for <bos> and <eos> on the target side
+            if len(spanish) > max_len - 2 or len(english) > max_len - 2:
+                continue
+            pairs.append((spanish, english))
+
+    # the file is sorted by length, so shuffle before taking a subset
+    random.Random(seed).shuffle(pairs)
+    return pairs[:limit]
+
+
 def create_translation_batches(
     pairs: list[tuple[str,str]],
     src_tokenizer: TranslationTokenizer,

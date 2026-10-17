@@ -43,6 +43,19 @@ def make_train_step(model: DecoderTransformer, optimizer: optax.GradientTransfor
 
     return train_step
 
+def masked_cross_entropy(
+    logits: jax.Array,
+    targets: jax.Array,
+    pad_id: int=0)-> jax.Array:
+    
+    vocab_size = logits.shape[-1]
+    one_hot = jax.nn.one_hot(targets, vocab_size)
+    log_probs = jax.nn.log_softmax(logits, axis=-1)
+    per_token_loss = -jnp.sum(log_probs * one_hot, axis=-1)
+    
+    mask = (targets != pad_id).astype(jnp.float32)
+    return jnp.sum(per_token_loss * mask) / jnp.sum(mask)
+
 def make_translation_train_step(model: EncoderDecoderTransformer, optimizer: optax.GradientTransformation):
     """Build a jitted train step function.
 
@@ -56,7 +69,7 @@ def make_translation_train_step(model: EncoderDecoderTransformer, optimizer: opt
         
         def loss_fn(params):
             logits = model.apply(params, src_batch, tgt_input)
-            return cross_entropy_loss(logits, tgt_target)
+            return masked_cross_entropy(logits, tgt_target)
 
         loss, grads = jax.value_and_grad(loss_fn)(params)
         updates, opt_state_new = optimizer.update(grads, opt_state, params)
