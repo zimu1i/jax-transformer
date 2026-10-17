@@ -134,6 +134,35 @@ print(translate(model, params, src_tok, tgt_tok, "hola"))
 # -> hello
 ```
 
+## Results and limitations
+
+Trained on a subset of the Tatoeba Spanish-English corpus (about 140k pairs, filtered to short sentences), a ~1.4M-parameter model running on CPU learns sentence structure and translates short, common full sentences reasonably well:
+
+```
+es: no me gusta este...   -> en: i don't like this ...
+es: mi casa               -> en: my house
+es: quiero a mi madre.    -> en: ... my mother
+```
+
+But it clearly struggles, and the failures are worth understanding because they are inherent to the design choices, not bugs:
+
+- **Character-level tokenization is the main bottleneck.** The model has to learn three hard things at once: how to spell English words, which Spanish word maps to which English word, and word order. Spelling one character at a time produces made-up words like "friendshation" or "mom mother loves". Every production translation system avoids this with subword tokenization, so the model rearranges chunks instead of spelling.
+- **Short fragments are out of distribution.** Almost every training pair is a full sentence ending in punctuation, so bare inputs like `hola` or `amigo` are unlike anything the model saw and it does worse on them than on full sentences.
+- **It is deliberately small.** 1.4M parameters on CPU, trained on a fraction of the data for a few minutes, is orders of magnitude below what real neural machine translation uses.
+
+The point of this project is a correct, from-scratch implementation and a clear understanding of every component, not a state-of-the-art BLEU score. The honest result is "right structure on short sentences, with known and explainable failure modes."
+
+## Future improvements
+
+In rough order of expected impact:
+
+- **Word-level or subword (BPE) tokenization.** The single highest-impact change. Treating `casa` as one token instead of four characters removes the spelling burden entirely and makes the alignment problem far easier. Subword tokenization (BPE or SentencePiece) is the standard choice because it keeps the vocabulary bounded while still handling rare words.
+- **Sinusoidal positional encoding.** Swap the learned positional embeddings for the fixed sine/cosine scheme from the paper, which generalizes to sequence lengths not seen during training.
+- **Beam search decoding.** Replace greedy `argmax` with beam search to reduce the compounding of early mistakes during generation.
+- **Label smoothing.** Soften the one-hot targets (as in the original paper) to reduce overconfidence and improve generalization.
+- **Encoder-output caching at inference.** The current `translate()` re-runs the encoder on every decode step; caching it once per sentence is a straightforward speedup.
+- **GPU training on the full corpus.** Larger `d_model`, more layers, and the complete dataset, which only becomes practical off CPU.
+
 ## Stack
 
 - [JAX](https://github.com/jax-ml/jax) for array ops, automatic differentiation (`jax.value_and_grad`), and JIT compilation (`jax.jit`)
